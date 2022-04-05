@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+colorole
+
+# Dependencies
+deps/*
+
+# Build
+build/*
+
+# VS Code
+.vscode/
