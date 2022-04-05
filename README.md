@@ -9,7 +9,7 @@ Written in C++ to prove ***<a href="https://github.com/bubu1441006/colorole">bub
 - CMake 3.10 or above
 - <a href="https://github.com/yourWaifu/sleepy-discord">sleepy-discord</a>
 
-# Build instruction
+# Building instructions
 - Create 2 directories: `deps` and `build`
 - Enter `deps` to <a href="https://github.com/yourWaifu/sleepy-discord">sleepy-discord</a>, then go back
 - `cmake -S . -B ./build`
