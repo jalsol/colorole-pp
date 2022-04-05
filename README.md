@@ -1,4 +1,4 @@
-# 🖌️ colorole-pp
+# 🖌️ colorole++
 
 A simple Discord bot to change username's colors by changing roles.
 
