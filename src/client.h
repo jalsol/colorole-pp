@@ -15,19 +15,19 @@ class ClientClass : public sd::DiscordClient {
     bool memberChunkLoaded = false;
     
     void removeRolesFromUser(
-        sd::Server server,
+        sd::Server                  server,
         sd::Snowflake<sd::Server> serverID,
-        sd::ServerMember member,
-        sd::Snowflake<sd::User> userID
+        sd::ServerMember            member,
+        sd::Snowflake<sd::User>     userID
     );
 
     void deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID);
 
     void assignNewRoleToUser(
-        sd::Server server,
+        sd::Server                  server,
         sd::Snowflake<sd::Server> serverID,
-        sd::Snowflake<sd::User> userID,
-        const std::string& color
+        sd::Snowflake<sd::User>     userID,
+        const std::string&           color
     );
 
 public:
