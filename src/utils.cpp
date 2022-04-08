@@ -1,61 +1,54 @@
-#include <cassert>
-#include <string>
 #include <regex>
 
-#include <dpp/dpp.h>
-#include <dpp/fmt/format.h>
-
-#include "constants.h"
 #include "utils.h"
 
-bool IsHexCode(const std::string& hex_code) {
-    return std::regex_match(hex_code, std::regex("^[0-9A-F]{6}$"));
+std::mt19937 randomEngine(
+    std::chrono::high_resolution_clock::now().time_since_epoch().count());
+
+bool isHexCode(const std::string& hexCode) {
+    return std::regex_match(hexCode, std::regex("^[0-9a-f]{6}$"));
 }
 
-void ClearPreviousRoles(dpp::cluster& cluster,
-                        const dpp::guild_member& member)
-{
-    for (const auto& role_id : member.roles) {
-        dpp::role* role_ptr = dpp::find_role(role_id);
-        assert(role_ptr != nullptr);
+unsigned int HexToDec(const std::string& hexCode) {
+    unsigned int value;
+    std::stringstream stream;
 
-        if (!IsHexCode(role_ptr->name)) {
-            continue;
-        }
+    stream << std::hex << hexCode;
+    stream >> value;
 
-        cluster.guild_member_delete_role(
-            kGuildId,
-            member.user_id,
-            role_id
-        );
+    return value;
+}
 
-        if (role_ptr->get_members().size() == 0) {
-            cluster.role_delete(kGuildId, role_id);
-        }
+int random(int a, int b) {
+    return std::uniform_int_distribution<int>(a, b)(randomEngine);
+}
+
+std::string getRandomColor() {
+    std::string value(6, '\0');
+
+    for (int i = 0; i < 6; ++i) {
+        value[i] = kHexCharacters[random(0, kHexCharacters.size() - 1)];
     }
+
+    return value;
 }
 
-bool UpdateRole(dpp::cluster& cluster,
-                const dpp::guild_member& member,
-                const std::string& hex_code)
-{
-    if (!IsHexCode(hex_code)) return false;
+bool fixMessage(std::string& color) {
+    color.erase(0, 2);
+    bool isRandom = (color == "random");
 
-    ClearPreviousRoles(cluster, member);
+    std::transform(
+        color.begin(), color.end(), color.begin(),
+        [](char c) { return std::tolower(c); }
+    );
 
-    // TODO: implement this
+    if (!isHexCode(color) && !isRandom) {
+        return false;
+    }
+
+    if (isRandom) {
+        color = getRandomColor();
+    }
 
     return true;
-}
-
-void UpdateChosenRole(const dpp::interaction_create_t& event) {
-    // TODO: implement this
-
-    event.reply("update!");
-}
-
-void UpdateRandomRole(const dpp::interaction_create_t& event) {
-    // TODO: implement this
-
-    event.reply("random!");
 }

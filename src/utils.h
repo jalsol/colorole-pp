@@ -2,19 +2,19 @@
 #define UTILS_H_
 
 #include <string>
+#include <chrono>
+#include <random>
 
-#include <dpp/dpp.h>
+const std::string kHexCharacters = "0123456789abcdef";
 
-bool IsHexCode(const std::string& hex_code);
+extern std::mt19937 randomEngine;
 
-void ClearPreviousRoles(dpp::cluster& cluster,
-                        const dpp::guild_member& member);
+bool isHexCode(const std::string& hexCode);
+unsigned int HexToDec(const std::string& hexCode);
 
-bool UpdateRole(dpp::cluster& cluster,
-                const dpp::guild_member& member,
-                const std::string& hex_code);
+int random(int a, int b);
+std::string getRandomColor();
 
-void UpdateChosenRole(const dpp::interaction_create_t& event);
-void UpdateRandomRole(const dpp::interaction_create_t& event);
+bool fixMessage(std::string& color);
 
 #endif // UTILS_H_
