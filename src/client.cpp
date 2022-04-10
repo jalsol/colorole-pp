@@ -3,10 +3,10 @@
 #include "client.h"
 
 void ClientClass::removeRolesFromUser(
-    sd::Server                  server,
+    sd::Server server,
     sd::Snowflake<sd::Server> serverID,
-    sd::ServerMember            member,
-    sd::Snowflake<sd::User>     userID
+    sd::ServerMember member,
+    sd::Snowflake<sd::User> userID
 ) {
     std::vector<sd::Snowflake<sd::Role>> memberRoleIDs = member.roles;
 
@@ -56,9 +56,9 @@ void ClientClass::deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID) {
 }
 
 void ClientClass::assignNewRoleToUser(
-    sd::Server                  server,
+    sd::Server server,
     sd::Snowflake<sd::Server> serverID,
-    sd::Snowflake<sd::User>     userID,
+    sd::Snowflake<sd::User> userID,
     const std::string& color
 ) {
     auto roleItr = std::find_if(rolesInUse.begin(),rolesInUse.end(),
