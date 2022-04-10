@@ -6,4 +6,4 @@
 
 const std::string kBotToken = std::getenv("COLOROLE_TOKEN");
 
-#endif CONSTANTS_H_
+#endif // CONSTANTS_H_
