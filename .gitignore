@@ -33,7 +33,7 @@
 colorole
 
 # Dependencies
-deps/*
+# deps/*
 libs/*
 
 # Build
