@@ -10,6 +10,7 @@ Written in C++ to prove ***<a href="https://github.com/bubu1441006/colorole">bub
 - <a href="https://github.com/yourWaifu/sleepy-discord">Sleepy Discord</a>
 
 # Building instructions
+- Clone this repository **recursively** (so that the dependencies will be cloned as well)
 - Create a directory called `build`
 - `cmake -S . -B ./build`
 - `make -C build`
