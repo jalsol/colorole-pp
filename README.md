@@ -16,6 +16,12 @@ Written in C++ to prove ***<a href="https://github.com/bubu1441006/colorole">bub
 - `make -C build`
 - The executable `colorole` will appear.
 
+# Running instructions
+- Create a bot, enable permissions that allow the bot to manage roles, read and send messages.
+- Enable `Presence Intent` and `Server Members Intent`.
+- Define an environment variable `COLOROLE_TOKEN` and paste the token there.
+- Run the `colorole` executable.
+
 # Notes
 - This implementation is **greatly inefficient**, so use at your own risk.
 - C++11 is required to compile.
