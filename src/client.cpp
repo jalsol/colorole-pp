@@ -92,7 +92,11 @@ void ClientClass::onMessage(sd::Message message) {
     if (!message.startsWith("$#")) return;
 
     std::string color = message.content;
-    if (!fixMessage(color)) return;
+
+    if (!fixMessage(color)) {
+        sendMessage(message.channelID, "Not a valid command.");
+        return;
+    }
 
     sd::Snowflake<sd::Server> serverID = message.serverID;
     sd::Server server = getServer(serverID).cast();
@@ -113,5 +117,11 @@ void ClientClass::onMessage(sd::Message message) {
         serverID,
         userID,
         color
+    );
+
+    sendMessage(
+        message.channelID,
+        message.author.username + "#" + message.author.discriminator +
+        " → **#" + color + "**"
     );
 }
