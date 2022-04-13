@@ -93,6 +93,25 @@ void ClientClass::assignSpecificRoleToUser(
     addRoleToUser(server, userID, color);
 }
 
+std::string ClientClass::getRoleOfUser(
+    sd::Server server,
+    sd::Snowflake<sd::User> userID
+) {
+    const auto& userRoleIDs = getMember(server.ID, userID).cast().roles;
+
+    if (userRoleIDs.empty()) {
+        return "";
+    }
+
+    auto roleItr = server.findRole(userRoleIDs.front());
+
+    if (!isHexCode(roleItr->name)) {
+        return "";
+    }
+
+    return roleItr->name;
+}
+
 void ClientClass::onMemberChunk(sd::ServerMembersChunk memberChunk) {
     serverMembers = std::move(memberChunk.members);
     memberChunkLoaded = true;
@@ -108,10 +127,23 @@ void ClientClass::onMessage(sd::Message message) {
         [](char c) { return std::tolower(c); }
     );
 
-    if (command == "copy") {
-        // TODO: implement this
-        sendMessage(message.channelID, "To be developed.");
-        return;
+    // store to save API call
+    sd::Server server = getServer(message.serverID).cast();
+
+    if (command.substr(0, 4) == "copy") {
+        if (message.mentions.empty()) {
+            sendMessage(message.channelID, "Mention a user to copy their role.");
+            return;
+        }
+
+        command = getRoleOfUser(
+            server,
+            message.mentions.front().ID
+        );
+
+        if (command == "") {
+            return;
+        }
     }
 
     if (command == "random") {
@@ -124,7 +156,7 @@ void ClientClass::onMessage(sd::Message message) {
     }
 
     assignSpecificRoleToUser(
-        getServer(message.serverID).cast(),
+        server,
         message.author.ID,
         command
     );

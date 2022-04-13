@@ -35,6 +35,11 @@ class ClientClass : public sd::DiscordClient {
         const std::string& color
     );
 
+    std::string getRoleOfUser(
+        sd::Server serverID,
+        sd::Snowflake<sd::User> userID
+    );
+
 public:
     using sd::DiscordClient::DiscordClient;
 
