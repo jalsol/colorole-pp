@@ -15,6 +15,4 @@ unsigned int HexToDec(const std::string& hexCode);
 int random(int a, int b);
 std::string getRandomColor();
 
-bool fixMessage(std::string& color);
-
 #endif // UTILS_H_

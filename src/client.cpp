@@ -4,22 +4,20 @@
 
 void ClientClass::removeRolesFromUser(
     sd::Server server,
-    sd::Snowflake<sd::Server> serverID,
-    sd::ServerMember member,
     sd::Snowflake<sd::User> userID
 ) {
-    std::vector<sd::Snowflake<sd::Role>> memberRoleIDs = member.roles;
-
-    for (auto roleID : memberRoleIDs) {
+    const auto& userRoleIDs = getMember(server.ID, userID).cast().roles;
+    
+    for (auto roleID : userRoleIDs) {
         auto roleItr = server.findRole(roleID);
 
         if (isHexCode(roleItr->name)) {
-            removeRole(serverID, userID, roleID);
+            removeRole(server.ID, userID, roleID);
         }
     }
 }
 
-void ClientClass::deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID) {
+void ClientClass::getCurrentServerRoles(sd::Snowflake<sd::Server> serverID) {
     sd::ServerMembersRequest request;
     request.serverID = serverID;
     request.presence = true;
@@ -39,8 +37,10 @@ void ClientClass::deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID) {
             rolesInUse.insert(roleID);
         }
     }
+}
 
-    std::vector<sd::Role> serverRoles = getRoles(serverID).vector();
+void ClientClass::deleteUnusedServerRoles(sd::Snowflake<sd::Server> serverID) {
+    const auto& serverRoles = getRoles(serverID).vector();
 
     for (const auto& role : serverRoles) { 
         if (!isHexCode(role.name)) {
@@ -55,9 +55,8 @@ void ClientClass::deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID) {
     }
 }
 
-void ClientClass::assignNewRoleToUser(
+void ClientClass::addRoleToUser(
     sd::Server server,
-    sd::Snowflake<sd::Server> serverID,
     sd::Snowflake<sd::User> userID,
     const std::string& color
 ) {
@@ -68,19 +67,32 @@ void ClientClass::assignNewRoleToUser(
         }
     );
 
-    // TODO: add role
     if (roleItr == rolesInUse.end()) {
         sd::Role newRole = createRole(
-            serverID,
+            server.ID,
             color,
             sd::Permission::NONE,
             HexToDec(color)
         ).cast();
 
-        addRole(serverID, userID, newRole.ID);
+        addRole(server.ID, userID, newRole.ID);
     } else {
-        addRole(serverID, userID, *roleItr);
+        addRole(server.ID, userID, *roleItr);
     }
+}
+
+void ClientClass::assignSpecificRoleToUser(
+    sd::Server server,
+    sd::Snowflake<sd::User> userID,
+    const std::string& color
+) {
+    removeRolesFromUser(server, userID);
+
+    getCurrentServerRoles(server.ID);
+
+    deleteUnusedServerRoles(server.ID);
+
+    addRoleToUser(server, userID, color);
 }
 
 void ClientClass::onMemberChunk(sd::ServerMembersChunk memberChunk) {
@@ -91,37 +103,37 @@ void ClientClass::onMemberChunk(sd::ServerMembersChunk memberChunk) {
 void ClientClass::onMessage(sd::Message message) {
     if (!message.startsWith("$#")) return;
 
-    std::string color = message.content;
+    std::string command = message.content;
+    command.erase(0, 2);
+    std::transform(
+        command.begin(), command.end(), command.begin(),
+        [](char c) { return std::tolower(c); }
+    );
 
-    if (!fixMessage(color)) {
+    if (command == "copy") {
+        // TODO: implement this
+        sendMessage(message.channelID, "To be developed.");
+        return;
+    }
+
+    if (command == "random") {
+        command = getRandomColor();
+    }
+
+    if (!isHexCode(command)) {
         sendMessage(message.channelID, "Not a valid command.");
         return;
     }
 
-    sd::Snowflake<sd::Server> serverID = message.serverID;
-    sd::Server server = getServer(serverID).cast();
-
-    sd::Snowflake<sd::User> userID = message.author.ID;
-
-    removeRolesFromUser(
-        server,
-        serverID,
-        message.member,
-        userID
-    );
-
-    deleteAllUnusedRoles(serverID);
-
-    assignNewRoleToUser(
-        server,
-        serverID,
-        userID,
-        color
+    assignSpecificRoleToUser(
+        getServer(message.serverID).cast(),
+        message.author.ID,
+        command
     );
 
     sendMessage(
         message.channelID,
         message.author.username + "#" + message.author.discriminator +
-        " → **#" + color + "**"
+        " → **#" + command + "**"
     );
 }

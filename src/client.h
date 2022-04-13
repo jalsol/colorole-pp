@@ -16,16 +16,21 @@ class ClientClass : public sd::DiscordClient {
     
     void removeRolesFromUser(
         sd::Server server,
-        sd::Snowflake<sd::Server> serverID,
-        sd::ServerMember member,
         sd::Snowflake<sd::User> userID
     );
 
-    void deleteAllUnusedRoles(sd::Snowflake<sd::Server> serverID);
+    void getCurrentServerRoles(sd::Snowflake<sd::Server> serverID);
 
-    void assignNewRoleToUser(
+    void deleteUnusedServerRoles(sd::Snowflake<sd::Server> serverID);
+
+    void addRoleToUser(
         sd::Server server,
-        sd::Snowflake<sd::Server> serverID,
+        sd::Snowflake<sd::User> userID,
+        const std::string& color
+    );
+
+    void assignSpecificRoleToUser(
+        sd::Server server,
         sd::Snowflake<sd::User> userID,
         const std::string& color
     );

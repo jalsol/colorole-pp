@@ -7,6 +7,10 @@
 namespace sd = SleepyDiscord;
 
 int main() {
+#ifdef DEVELOPMENT
+    std::cout << "[DEBUG] Development mode\n";
+#endif // DEVELOPMENT
+
     ClientClass client(kBotToken, sd::USER_CONTROLED_THREADS);
 
     client.setIntents(

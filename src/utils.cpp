@@ -33,22 +33,3 @@ std::string getRandomColor() {
     return value;
 }
 
-bool fixMessage(std::string& color) {
-    color.erase(0, 2);
-    bool isRandom = (color == "random");
-
-    std::transform(
-        color.begin(), color.end(), color.begin(),
-        [](char c) { return std::tolower(c); }
-    );
-
-    if (!isHexCode(color) && !isRandom) {
-        return false;
-    }
-
-    if (isRandom) {
-        color = getRandomColor();
-    }
-
-    return true;
-}
