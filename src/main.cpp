@@ -1,10 +1,5 @@
-#include "sleepy_discord/sleepy_discord.h"
-
 #include "constants.h"
 #include "client.h"
-#include "utils.h"
-
-namespace sd = SleepyDiscord;
 
 int main() {
 #ifdef DEVELOPMENT
