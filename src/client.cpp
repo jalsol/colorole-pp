@@ -143,8 +143,6 @@ void ClientClass::onMessage(sd::Message message) {
             message.mentions.front().ID
         );
 
-        std::cout << "[DEBUG] " << message.author.username << ' ' << command << '\n';
-
         if (command == "") {
             return;
         }
