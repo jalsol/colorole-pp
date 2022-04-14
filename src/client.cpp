@@ -163,7 +163,6 @@ void ClientClass::onMessage(sd::Message message) {
 
     sendMessage(
         message.channelID,
-        message.author.username + "#" + message.author.discriminator +
-        " → **#" + command + "**"
+        "<@" + message.author.ID + "> → **#" + command + "**"
     );
 }
