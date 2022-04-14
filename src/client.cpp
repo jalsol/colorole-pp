@@ -99,17 +99,19 @@ std::string ClientClass::getRoleOfUser(
 ) {
     const auto& userRoleIDs = getMember(server.ID, userID).cast().roles;
 
-    if (userRoleIDs.empty()) {
+    auto roleItr = std::find_if(userRoleIDs.begin(), userRoleIDs.end(),
+        [&](sd::Snowflake<sd::Role> roleID) {
+            auto it = server.findRole(roleID);
+            return isHexCode(it->name);
+        }
+    );
+
+
+    if (roleItr == userRoleIDs.end()) {
         return "";
     }
 
-    auto roleItr = server.findRole(userRoleIDs.front());
-
-    if (!isHexCode(roleItr->name)) {
-        return "";
-    }
-
-    return roleItr->name;
+    return server.findRole(*roleItr)->name;
 }
 
 void ClientClass::onMemberChunk(sd::ServerMembersChunk memberChunk) {
@@ -140,6 +142,8 @@ void ClientClass::onMessage(sd::Message message) {
             server,
             message.mentions.front().ID
         );
+
+        std::cout << "[DEBUG] " << message.author.username << ' ' << command << '\n';
 
         if (command == "") {
             return;
