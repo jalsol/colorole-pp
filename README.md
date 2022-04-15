@@ -9,21 +9,37 @@ Written in C++ to prove ***<a href="https://github.com/bubu1441006/colorole">bub
 - CMake 3.6 or above
 - <a href="https://github.com/yourWaifu/sleepy-discord">Sleepy Discord</a>
 
-# Building instructions
+# Building
 - Clone this repository **recursively** (so that the dependencies will be cloned as well)
 - Create a directory called `build`
+- Make sure the definition of `DEVELOPMENT` is commented out in `CMakeLists.txt`.
 - `cmake -S . -B ./build`
 - `make -C build`
 - The executable `colorole` will appear.
 
-# Running instructions
+# Running
 - Create a bot, enable permissions that allow the bot to manage roles, read and send messages.
 - Enable `Presence Intent` and `Server Members Intent`.
 - Define an environment variable `COLOROLE_TOKEN` and paste the token there.
 - Run the `colorole` executable.
 
 # Notes
-- This implementation is **greatly inefficient**, so use at your own risk.
+- This implementation is **highly inefficient**, so use at your own risk.
 - C++11 is required to compile.
 - If error 5002 gets raised, clear CMake build cache by deleting `build/CMakeCache.txt`, then rebuild.
 - If CMake complains about deprecation for versions < 2.8.12, go to `deps/sleepy-discord/buildtools/cmake/`, open `DownloadProject.CMakeLists.cmake.in`, then edit `2.8.2` to `3.6`.
+
+# Usage
+The command prefix for this bot is `$#`.
+
+## `$#<hex code>`
+Change the color of your name to the color specified by the hex code.
+<img src="assets/usage/hexcode.png"/>
+
+## `$#random`
+Change the color of your name to a random color.
+<img src="assets/usage/random.png"/>
+
+## `$#copy @user`
+Change the color of your name to the mentioned user's color.
+<img src="assets/usage/copy.png"/>
