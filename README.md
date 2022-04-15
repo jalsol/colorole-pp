@@ -34,12 +34,15 @@ The command prefix for this bot is `$#`.
 
 ## `$#<hex code>`
 Change the color of your name to the color specified by the hex code.
+
 <img src="assets/usage/hexcode.png"/>
 
 ## `$#random`
 Change the color of your name to a random color.
+
 <img src="assets/usage/random.png"/>
 
 ## `$#copy @user`
 Change the color of your name to the mentioned user's color.
+
 <img src="assets/usage/copy.png"/>
