@@ -1,6 +1,6 @@
 # 🖌️ colorole++
 
-A simple Discord bot to change username's colors by changing roles.
+A simple Discord bot to change username's colors by replacing their roles.
 
 Written in C++ to prove ***<a href="https://github.com/bubu1441006/colorole">bubu</a> is non*** and I'm (obviously) superior to him.
 
