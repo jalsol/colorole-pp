@@ -11,7 +11,7 @@ namespace sd = SleepyDiscord;
 
 class ClientClass : public sd::DiscordClient {
     std::vector<sd::ServerMember> serverMembers;
-    std::unordered_set <sd::Snowflake<sd::Role>> rolesInUse;
+    std::unordered_set<sd::Snowflake<sd::Role>> rolesInUse;
     bool memberChunkLoaded = false;
     
     void removeRolesFromUser(
