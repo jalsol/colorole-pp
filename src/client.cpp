@@ -152,6 +152,10 @@ void ClientClass::onMessage(sd::Message message) {
         command = getRandomColor();
     }
 
+    if (command == "daily") {
+        command = colorOfTheDay();
+    }
+
     if (!isHexCode(command)) {
         sendMessage(message.channelID, "Not a valid command.");
         return;
